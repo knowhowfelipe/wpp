@@ -42,7 +42,7 @@ def index():
 #    if 'user_id' in session:
 #        return redirect(url_for('home'))  # Redireciona para a página home se estiver autenticado
 #    return redirect(url_for('login'))  # Redireciona para a página de login se não estiver autenticado
-    return render_template('index.html')
+    return render_template('home.html')
 
 @app.route('/home')
 def home():
@@ -94,53 +94,47 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/register', methods=['POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    nome = request.form.get('name')
-    email = request.form.get('email')
-    #identificador_comercial = request.form.get('identificador_comercial')
-    senha = request.form.get('senha')
-    repeat_senha = request.form.get('repeat_senha')
+    if request.method == 'POST':
+        nome = request.form.get('name')
+        email = request.form.get('email')
+        senha = request.form.get('senha')
+        repeat_senha = request.form.get('repeat_senha')
 
-    if not nome or not email or not senha or not repeat_senha:
-        return jsonify({'error': 'Por favor, preencha todos os campos.'}), 400
+        if not nome or not email or not senha or not repeat_senha:
+            return jsonify({'error': 'Por favor, preencha todos os campos.'}), 400
 
-    # Verifica se as senhas coincidem no backend também
-    if senha != repeat_senha:
-        return jsonify({'error': 'As senhas não coincidem.'}), 400
-    
-    conn = get_db_connection()
-    cursor = conn.cursor()
+        if senha != repeat_senha:
+            return jsonify({'error': 'As senhas não coincidem.'}), 400
 
-    # Validação 1: Verificar se o e-mail já existe
-    cursor.execute('SELECT COUNT(*) FROM USUARIOS WHERE email = %s', (email,))
-    if cursor.fetchone()[0] > 0:
-        return jsonify({'error': 'O e-mail já está em uso.'}), 400
+        conn = get_db_connection()
+        cursor = conn.cursor()
 
-    # Gerar código de acesso único
-    codigo_acesso = None
+        cursor.execute('SELECT COUNT(*) FROM USUARIOS WHERE email = %s', (email,))
+        if cursor.fetchone()[0] > 0:
+            return jsonify({'error': 'O e-mail já está em uso.'}), 400
 
+        codigo_acesso = None
 
-    while True:
-        codigo_acesso = random.randint(1, 9999)
-        cursor.execute('SELECT COUNT(*) FROM USUARIOS WHERE codigo_acesso = %s', (codigo_acesso,))
-        exists = cursor.fetchone()[0]
-        if exists == 0:  # O código de acesso é único
-            break
+        while True:
+            codigo_acesso = random.randint(1, 9999)
+            cursor.execute('SELECT COUNT(*) FROM USUARIOS WHERE codigo_acesso = %s', (codigo_acesso,))
+            exists = cursor.fetchone()[0]
+            if exists == 0:
+                break
 
-    # Criptografar a senha
-    #hashed_password = bcrypt.hashpw(senha.encode('utf-8'), bcrypt.gensalt())
-    hashed_password = bcrypt.hashpw(senha.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')  # Converte para string
+        hashed_password = bcrypt.hashpw(senha.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
-    # Inserir no banco de dados
-    cursor.execute('INSERT INTO USUARIOS (email, nome, codigo_acesso, senha, identificador_comercial) VALUES (%s, %s, %s, %s, %s)',
-                   (email, nome, codigo_acesso, hashed_password, codigo_acesso))
-    conn.commit()
-    cursor.close()
-    conn.close()
+        cursor.execute('INSERT INTO USUARIOS (email, nome, codigo_acesso, senha, identificador_comercial) VALUES (%s, %s, %s, %s, %s)',
+                       (email, nome, codigo_acesso, hashed_password, codigo_acesso))
+        conn.commit()
+        cursor.close()
+        conn.close()
 
-    # Retorna uma resposta de sucesso em formato JSON para ser exibida no frontend
-    return jsonify({'message': 'Registrado com sucesso!', 'codigo_acesso': codigo_acesso}), 201
+        return jsonify({'message': 'Registrado com sucesso!', 'codigo_acesso': codigo_acesso}), 201
+
+    return render_template('register.html')
 
 
 if __name__ == '__main__':

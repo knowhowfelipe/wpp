@@ -47,6 +47,11 @@
         .btn-submit:hover {
             background-color: #0056b3;
         }
+        .toggle-link {
+            margin-top: 20px;
+            display: block;
+            color: #007bff;
+        }
     </style>
 </head>
 <body>
@@ -63,6 +68,7 @@
             </div>
             <button type="button" class="btn btn-submit" onclick="loginUser()"><i class="fas fa-sign-in-alt"></i></button>
         </form>
+        <a href="/register" class="toggle-link">Não tem uma conta? Cadastre-se</a>
     </div>
 
     <!-- Bootstrap JS and jQuery -->
@@ -72,3 +78,4 @@
     <script src="{{ url_for('static', filename='login.js') }}"></script>
 </body>
 </html>
+
