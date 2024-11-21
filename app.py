@@ -18,16 +18,6 @@ app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', secrets.token_hex(16))
 #app.register_blueprint(categorias_bp)
 
-def atualiza_data_acesso(user_db_name):
-    conn = get_db_connection(user_db_name)
-    cursor = cursor = conn.cursor()
-    cursor.execute("""
-            UPDATE USUARIOS_INTERNOS
-            SET data_acesso = %s
-            WHERE ID_user_interno = 1;
-        """, (datetime.now(),))
-    conn.commit()
-    conn.close()
 
 # Inicializa o banco de dados de usuários
 try:
@@ -40,32 +30,27 @@ except Exception as e:
 @app.route('/')
 def index():
 #    if 'user_id' in session:
-#        return redirect(url_for('home'))  # Redireciona para a página home se estiver autenticado
+#        return redirect(url_for('form'))  # Redireciona para a página form se estiver autenticado
 #    return redirect(url_for('login'))  # Redireciona para a página de login se não estiver autenticado
-    return render_template('home.html')
+    return render_template('form.html')
 
-@app.route('/home')
-def home():
+@app.route('/form')
+def form():
     if 'user_id' in session:
-        return render_template('home.html')  # Ou a página que deseja renderizar
+        return render_template('form.html')  # Ou a página que deseja renderizar
     return redirect(url_for('login'))  # Redireciona para a página de login se não estiver autenticado
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        login_method = request.form.get('loginMethod')  # Captura o método de login
+        email = request.form.get('email')
         senha = request.form.get('senha')
 
-        if not login_method or not senha:
+        if not email or not senha:
             return jsonify({'mensagem': 'Por favor, preencha todos os campos.'}), 400
 
-        if login_method == 'accessCode':
-            codigo_acesso = request.form.get('codigo_acesso')
-            user = find_user(codigo_acesso)  # Busca pelo código de acesso
-        elif login_method == 'email':
-            email = request.form.get('email')
-            user = find_user_by_email(email)  # Busca pelo e-mail
+        user = find_user_by_email(email)  # Busca pelo e-mail
 
         if user:
             id_usuario = user['id_usuario']
@@ -75,9 +60,8 @@ def login():
             if bcrypt.checkpw(senha.encode('utf-8'), hashed_password.encode('utf-8')):
                 session['user_id'] = id_usuario
                 create_user_database(id_usuario)  # Cria o banco de dados do usuário
-                create_tables(f'movimentacoes_{id_usuario}')  # Chama a função para criar a tabela
-                user_db_name = f"movimentacoes_{id_usuario}"
-                atualiza_data_acesso(user_db_name)
+                create_tables(f'dados_{id_usuario}')  # Chama a função para criar a tabela
+                user_db_name = f"dados_{id_usuario}"
                 return jsonify({'mensagem': 'Login bem-sucedido'}), 200  # Retorna JSON de sucesso
             else:
                 return jsonify({'mensagem': 'Senha incorreta.'}), 401

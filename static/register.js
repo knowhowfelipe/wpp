@@ -15,19 +15,15 @@ function registerUser() {
         return;
     }
 
-    const data = {
-        name: name,
-        email: email,
-        senha: password,
-        repeat_senha: repeatPassword
-    };
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('senha', password);
+    formData.append('repeat_senha', repeatPassword);
 
     fetch('/register', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
+        body: formData
     })
     .then(response => response.json())
     .then(data => {

@@ -11,11 +11,13 @@ load_dotenv()
 def init_user_db():
     """Inicializa o banco de dados de usuários, criando a tabela se não existir."""
     try:
-        conn = get_db_connection(db_name='usuarios_db')
+        conn = get_db_connection(db_name='wpp_db')
         cursor = conn.cursor(cursor_factory=DictCursor)
         print("Conexão ao banco de dados estabelecida.")
 
-        sql_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'scriptsdb', 'bancogeral.sql')
+        #sql_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'scriptsdb', 'bancogeral.sql')
+        # Exemplo de leitura de um arquivo SQL com codificação UTF-8
+        sql_file_path = 'scriptsdb/bancogeral.sql'
 
         # Ler o conteúdo do arquivo SQL
         with open(sql_file_path, 'r') as sql_file:
@@ -40,7 +42,7 @@ def init_user_db():
 ###### FUNÇÕES PARA CRIAR BANCO DE DADOS INDIVIDUAIS
 def create_user_database(user_id):
     """Cria um banco de dados específico para o usuário."""
-    db_name = f'movimentacoes_{user_id}'  # Nome do banco de dados baseado no ID do usuário
+    db_name = f'dados_{user_id}'  # Nome do banco de dados baseado no ID do usuário
     create_database(db_name)
 
 def create_database(db_name):

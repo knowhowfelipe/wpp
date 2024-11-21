@@ -8,22 +8,18 @@ function loginUser() {
         return;
     }
 
-    const data = {
-        email: email,
-        senha: password
-    };
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('senha', password);
 
     fetch('/login', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
+        body: formData
     })
     .then(response => response.json())
     .then(data => {
         if (data.mensagem === 'Login bem-sucedido') {
-            window.location.href = '/home';
+            window.location.href = '/form';
         } else {
             alert(data.mensagem);
         }

@@ -2,54 +2,53 @@
 
 ------- 1. CRIAR TABELAS USUARIOS
 CREATE TABLE Usuarios (
-    id_usuario SERIAL PRIMARY KEY,                   -- Identificador ˙nico para cada usu·rio
-    codigo_acesso INT UNIQUE NOT NULL,               -- CÛdigo de acesso ˙nico
-    nome VARCHAR(255) NOT NULL,                     -- Nome do usu·rio
-    identificador_comercial VARCHAR(255) UNIQUE NOT NULL, -- Identificador comercial ˙nico
-    email VARCHAR(255) UNIQUE NOT NULL,             -- Email ˙nico do usu·rio
-    senha VARCHAR(255) NOT NULL                      -- Senha do usu·rio (deve ser armazenada de forma segura)
+    id_usuario SERIAL PRIMARY KEY,                   -- Identificador √∫nico para cada usu√°rio
+    codigo_acesso INT UNIQUE NOT NULL,               -- C√≥digo de acesso √∫nico
+    nome VARCHAR(255) NOT NULL,                      -- Nome do usu√°rio
+    identificador_comercial VARCHAR(255) UNIQUE NOT NULL, -- Identificador comercial √∫nico
+    email VARCHAR(255) UNIQUE NOT NULL,              -- Email √∫nico do usu√°rio
+    senha VARCHAR(255) NOT NULL                      -- Senha do usu√°rio (deve ser armazenada de forma segura)
 );
 
--- Õndices para a tabela de Usu·rios
+-- √çndices para a tabela de Usu√°rios
 CREATE INDEX idx_email ON Usuarios(email);
 CREATE INDEX idx_codigo_acesso ON Usuarios(codigo_acesso);
 
-------- 2. CRIAR TABELAS BANCOS
-CREATE TABLE Categorias (
-    cod_compensacao VARCHAR(255) NOT NULL,                
-    nome VARCHAR(255) NOT NULL                    
-);
+-- Inserir dados na tabela Usu√°rios
+INSERT INTO Usuarios (codigo_acesso, nome, identificador_comercial, email, senha)
+VALUES (999, 'Teste', '00000', 'teste9@gmail.com', '$2b$12$nWUp63PwH40zXMAWiulc.eOjH9J9EMlGJ220tglhwraSaQsDKjpOW');
+
 
 -- Tabela de Clientes
 CREATE TABLE Clientes (
-    cliente_id SERIAL PRIMARY KEY,                  -- Identificador ˙nico para cada cliente
+    cliente_id SERIAL PRIMARY KEY,                  -- Identificador √∫nico para cada cliente
     nome VARCHAR(255) NOT NULL,                     -- Nome do cliente
     email VARCHAR(255) UNIQUE NOT NULL,             -- Email do cliente
     data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- Data de cadastro
 );
 
--- Õndices para a tabela de Clientes
+-- √çndices para a tabela de Clientes
 CREATE INDEX idx_cliente_nome ON Clientes(nome);
 CREATE INDEX idx_cliente_email ON Clientes(email);
 
--- Tabela Intermedi·ria para relaÁ„o Usu·rios-Clientes
+-- Tabela Intermedi√°ria para rela√ß√£o Usu√°rios-Clientes
 CREATE TABLE Usuario_Cliente (
-    id SERIAL PRIMARY KEY,                             -- Identificador ˙nico para a relaÁ„o
-    id_usuario INT REFERENCES Usuarios(id_usuario) ON DELETE CASCADE,  -- ReferÍncia ao Usu·rio
-    cliente_id INT REFERENCES Clientes(cliente_id) ON DELETE CASCADE,   -- ReferÍncia ao Cliente
-    nivel_permissao VARCHAR(50) NOT NULL,             -- NÌvel de permiss„o (ex: 'leitura', 'escrita', 'admin')
-    UNIQUE (id_usuario, cliente_id)                   -- Garantir que a combinaÁ„o de usu·rio e cliente seja ˙nica
+    id SERIAL PRIMARY KEY,                             -- Identificador √∫nico para a rela√ß√£o
+    id_usuario INT REFERENCES Usuarios(id_usuario) ON DELETE CASCADE,  -- Refer√™ncia ao Usu√°rio
+    cliente_id INT REFERENCES Clientes(cliente_id) ON DELETE CASCADE,   -- Refer√™ncia ao Cliente
+    nivel_permissao VARCHAR(50) NOT NULL,             -- N√≠vel de permiss√£o (ex: 'leitura', 'escrita', 'admin')
+    UNIQUE (id_usuario, cliente_id)                   -- Garantir que a combina√ß√£o de usu√°rio e cliente seja √∫nica
 );
 
--- Õndice para a tabela de Usu·rio_Cliente
+-- √çndice para a tabela de Usu√°rio_Cliente
 CREATE INDEX idx_usuario_cliente ON Usuario_Cliente(id_usuario, cliente_id);
 
 
--- Trigger para auditoria no cadastro de usu·rios
+-- Trigger para auditoria no cadastro de usu√°rios
 CREATE OR REPLACE FUNCTION auditoria_usuario()
 RETURNS TRIGGER AS $$
 BEGIN
-    RAISE NOTICE 'Usu·rio % criado com o email %', NEW.nome, NEW.email;
+    RAISE NOTICE 'Usu√°rio % criado com o email %', NEW.nome, NEW.email;
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
