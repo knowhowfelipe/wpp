@@ -4,12 +4,15 @@ from psycopg2.extras import DictCursor
 import secrets
 import os
 import bcrypt
-from usuarios import find_user, user_exists, find_user_by_email, verificar_autenticacao, get_db_connection
-from db import get_db_connection, init_user_db, create_user_database, create_tables
 from dotenv import load_dotenv
 import random
 from datetime import datetime
 import requests
+import sys
+# Adiciona a pasta 'api' ao PYTHONPATH 
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'api')))
+from usuarios import find_user, user_exists, find_user_by_email, verificar_autenticacao, get_db_connection
+from db import get_db_connection, init_user_db, create_user_database, create_tables
 from stripe_plans import stripe_plans_bp
 from auth import db, User
 
