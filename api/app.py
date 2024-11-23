@@ -1,3 +1,4 @@
+#from __init__ import create_app
 from flask import Flask, jsonify, request, render_template, redirect, url_for, session
 from psycopg2.extras import DictCursor
 import secrets
@@ -17,9 +18,12 @@ from auth import db, User
 # Carrega as variáveis de ambiente do arquivo .env
 load_dotenv()
 
+#app = create_app()
+
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', secrets.token_hex(16))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://username:admin@localhost:5432/wpp_db'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://username:admin@localhost:5432/wpp_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://neondb_owner:plgM0Dqe7ORX@ep-broad-meadow-a5n9c3kh-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
