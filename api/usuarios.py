@@ -23,11 +23,9 @@ def verificar_autenticacao(f):
 
 
 def get_db_connection(db_name=None):
-    """Estabelece uma conexão com o banco de dados de usuários."""  
-
+    print("Estabelecendo uma conexão com o banco de dados de usuários.")  
     if db_name is None:
-        db_name = os.environ.get('DB_GERAL')
-
+        db_name = os.getenv('DB_GERAL')
     user = os.getenv('USER')
     password = os.getenv('PASSWORD')
     host = os.getenv('HOST')
