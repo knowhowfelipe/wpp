@@ -8,6 +8,9 @@ from db import get_db_connection, init_user_db, create_user_database, create_tab
 from dotenv import load_dotenv
 import random
 from datetime import datetime
+import requests
+from stripe_plans import stripe_plans_bp
+from auth import db, User
 
 
 
@@ -16,7 +19,11 @@ load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', secrets.token_hex(16))
-#app.register_blueprint(categorias_bp)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://username:admin@localhost:5432/wpp_db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db.init_app(app)
+app.register_blueprint(stripe_plans_bp)
 
 
 # Inicializa o banco de dados de usuários
@@ -36,9 +43,7 @@ def index():
 
 @app.route('/form')
 def form():
-    if 'user_id' in session:
-        return render_template('form.html')  # Ou a página que deseja renderizar
-    return redirect(url_for('login'))  # Redireciona para a página de login se não estiver autenticado
+    return render_template('form.html')  # Ou a página que deseja renderizar
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -70,7 +75,12 @@ def login():
 
     return render_template('login.html')  # Para GET, retorna a página HTML
 
-
+@app.route('/get-user-id', methods=['GET'])
+def get_user_id():
+    if 'user_id' in session:
+        return jsonify({'user_id': session['user_id']}), 200
+    else:
+        return jsonify({'error': 'Usuário não está logado.'}), 403
 
 @app.route('/logout')
 def logout():
@@ -119,7 +129,6 @@ def register():
         return jsonify({'message': 'Registrado com sucesso!', 'codigo_acesso': codigo_acesso}), 201
 
     return render_template('register.html')
-
 
 if __name__ == '__main__':
     app.run(debug=True)

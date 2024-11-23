@@ -1,9 +1,5 @@
-/* Importando a fonte do Google */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-
 /* Estilos Globais */
 body {
-    font-family: 'Poppins', sans-serif;
     background-color: #f4f6f9;
     margin: 0;
     padding: 0;
@@ -70,7 +66,7 @@ body {
     color: #4a5568;
 }
 
-.input-select, .input-field, textarea {
+.input-field, textarea {
     border: none;
     padding: 10px 15px;
     width: 100%;
@@ -78,8 +74,25 @@ body {
     border-radius: 8px;
 }
 
+
+.select-option {
+    display: flex;
+    align-items: center;
+}
+
 .input-select {
     background-color: #f7fafc;
+    font-family: 'Noto Sans', 'Noto Color Emoji', sans-serif; /* Adicionando a fonte de emoji */
+    border: none;
+    width: 100%;
+    border-radius: 8px;
+    font-size: 16px;
+    padding: 10px 15px;
+}
+
+.flag-icon {
+    margin-right: 8px;
+    font-family: 'Noto Color Emoji'
 }
 
 .input-field {
@@ -118,67 +131,102 @@ textarea {
 
 /* Botão de Menu */
 .menu-toggle-btn {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: #2b6cb0;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    position: fixed; /* Posiciona o botão fixo na tela */
+    top: 20px; /* Distância do topo */
+    right: 20px; /* Distância da direita */
+    background-color: #2b6cb0; /* Cor de fundo */
+    color: white; /* Cor do texto */
+    border: none; /* Sem borda */
+    border-radius: 50%; /* Bordas arredondadas */
+    width: 50px; /* Largura do botão */
+    height: 50px; /* Altura do botão */
+    display: flex; /* Flexbox layout */
+    justify-content: center; /* Centraliza horizontalmente o conteúdo */
+    align-items: center; /* Centraliza verticalmente o conteúdo */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Sombra */
+    cursor: pointer; /* Cursor de ponteiro ao passar o mouse */
+    transition: background-color 0.3s ease; /* Transição suave para a mudança de cor */
 }
 
 .menu-toggle-btn:hover {
-    background-color: #3182ce;
+    background-color: #3182ce; /* Cor de fundo ao passar o mouse */
 }
 
 /* Menu de Navegação */
 .menu {
-    position: fixed;
-    top: 80px;
-    right: 20px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    display: none;
-    z-index: 1000;
-    width: 200px;
+    position: fixed; /* Posiciona o menu fixo na tela */
+    top: 80px; /* Distância do topo */
+    right: 20px; /* Distância da direita */
+    background-color: white; /* Cor de fundo */
+    border-radius: 8px; /* Bordas arredondadas */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra */
+    display: none; /* Inicialmente escondido */
+    z-index: 1000; /* Z-index para garantir que fique acima de outros elementos */
+    width: 200px; /* Largura do menu */
 }
 
 .menu-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    list-style: none; /* Remove as bolinhas da lista */
+    padding: 0; /* Remove o padding */
+    margin: 0; /* Remove a margem */
 }
 
 .menu-list li {
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0; /* Linha de separação entre os itens */
 }
 
 .menu-list li:last-child {
-    border-bottom: none;
+    border-bottom: none; /* Remove a linha de separação do último item */
 }
 
 .menu-list a {
-    display: block;
-    padding: 12px 20px;
-    color: #2b6cb0;
-    font-weight: 500;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
+    display: block; /* Faz com que o link ocupe todo o espaço disponível */
+    padding: 12px 20px; /* Espaçamento interno */
+    color: #2b6cb0; /* Cor do texto */
+    font-weight: 500; /* Peso da fonte */
+    text-decoration: none; /* Remove o sublinhado */
+    transition: background-color 0.3s ease; /* Transição suave para a mudança de cor */
 }
 
 .menu-list a:hover {
-    background-color: #edf2f7;
+    background-color: #edf2f7; /* Cor de fundo ao passar o mouse */
+    color: #2b6cb0; /* Mantém a cor do texto ao passar o mouse */
+}
+
+.emoji-btn-c {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #4a5568;
+    padding: 10px;
+}
+
+.emoji-btn-c:hover {
     color: #2b6cb0;
 }
+
+.emoji-picker {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    padding: 10px;
+    z-index: 1000;
+}
+
+.emoji-picker span {
+    cursor: pointer;
+    font-size: 24px;
+    padding: 5px;
+    margin: 5px;
+    display: inline-block;
+}
+
+
 
 /* Responsividade */
 @media (max-width: 768px) {
