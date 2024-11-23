@@ -7,7 +7,14 @@ CREATE TABLE Usuarios (
     nome VARCHAR(255) NOT NULL,                      -- Nome do usuário
     identificador_comercial VARCHAR(255) UNIQUE NOT NULL, -- Identificador comercial único
     email VARCHAR(255) UNIQUE NOT NULL,              -- Email único do usuário
-    senha VARCHAR(255) NOT NULL                      -- Senha do usuário (deve ser armazenada de forma segura)
+    senha VARCHAR(255) NOT NULL,                      -- Senha do usuário (deve ser armazenada de forma segura)
+    is_premium BOOLEAN DEFAULT FALSE,
+    subscription_start_date DATE,
+    subscription_end_date DATE,
+    stripe_customer_id VARCHAR(255),
+    stripe_subscription_id VARCHAR(255)
+);
+
 );
 
 -- Índices para a tabela de Usuários
