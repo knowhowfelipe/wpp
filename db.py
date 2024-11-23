@@ -6,12 +6,13 @@ import os
 
 # Carrega as variáveis de ambiente do arquivo .env
 load_dotenv()
+db_name = os.getenv('DB_GERAL')
 
 ### CRIA AS TABELAS DO BANCO DE DADOS CENTRAL
 def init_user_db():
     """Inicializa o banco de dados de usuários, criando a tabela se não existir."""
     try:
-        conn = get_db_connection(db_name='wpp_db')
+        conn = get_db_connection(db_name=db_name)
         cursor = conn.cursor(cursor_factory=DictCursor)
         print("Conexão ao banco de dados estabelecida.")
 
