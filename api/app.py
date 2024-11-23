@@ -115,10 +115,15 @@ def register():
             return jsonify({'error': 'As senhas não coincidem.'}), 400
 
         conn = get_db_connection()
+        if conn is None:
+            return jsonify({'error': 'Erro ao se conectar ao banco de dados.'}), 500
+
         cursor = conn.cursor()
 
         cursor.execute('SELECT COUNT(*) FROM USUARIOS WHERE email = %s', (email,))
         if cursor.fetchone()[0] > 0:
+            cursor.close()
+            conn.close()
             return jsonify({'error': 'O e-mail já está em uso.'}), 400
 
         codigo_acesso = None

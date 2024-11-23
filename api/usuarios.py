@@ -32,18 +32,19 @@ def get_db_connection(db_name=None):
         user = os.getenv('USER')
         password = os.getenv('PASSWORD')
         host = os.getenv('HOST')
-       # port = os.getenv('PORT')
+        # port = os.getenv('PORT')
         conn = psycopg2.connect(
-                dbname=db_name,
-                user=user,
-                password=password,
-                host=host,
-            #    port=port   
+            dbname=db_name,
+            user=user,
+            password=password,
+            host=host,
+            # port=port   
         )
         print("Conexão bem-sucedida!")
         return conn
-    except:
-        print("ERRO AO SE CONECTAR AO BANCO")
+    except psycopg2.Error as e:
+        print(f"ERRO AO SE CONECTAR AO BANCO: {e}")
+        return None
 
 def find_user(codigo_acesso):
     """Busca um usuário pelo código de acesso."""
