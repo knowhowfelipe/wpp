@@ -28,11 +28,14 @@ def get_db_connection(db_name=None):
     if db_name is None:
         db_name = os.environ.get('DB_GERAL')
 
+    user = os.getenv('USER')
+    password = os.getenv('PASSWORD')
+    host = os.getenv('HOST')
+    # port = os.getenv('PORT')
+
+    print(f"DB Name: {db_name}, User: {user}, Host: {host}")
+
     try:
-        user = os.getenv('USER')
-        password = os.getenv('PASSWORD')
-        host = os.getenv('HOST')
-        # port = os.getenv('PORT')
         conn = psycopg2.connect(
             dbname=db_name,
             user=user,
