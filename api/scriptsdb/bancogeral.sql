@@ -7,14 +7,12 @@ CREATE TABLE Usuarios (
     nome VARCHAR(255) NOT NULL,                      -- Nome do usuário
     identificador_comercial VARCHAR(255) UNIQUE NOT NULL, -- Identificador comercial único
     email VARCHAR(255) UNIQUE NOT NULL,              -- Email único do usuário
-    senha VARCHAR(255) NOT NULL,                      -- Senha do usuário (deve ser armazenada de forma segura)
+    senha VARCHAR(255) NOT NULL,                     -- Senha do usuário (deve ser armazenada de forma segura)
     is_premium BOOLEAN DEFAULT FALSE,
     subscription_start_date DATE,
     subscription_end_date DATE,
     stripe_customer_id VARCHAR(255),
     stripe_subscription_id VARCHAR(255)
-);
-
 );
 
 -- Índices para a tabela de Usuários
@@ -24,7 +22,6 @@ CREATE INDEX idx_codigo_acesso ON Usuarios(codigo_acesso);
 -- Inserir dados na tabela Usuários
 INSERT INTO Usuarios (codigo_acesso, nome, identificador_comercial, email, senha)
 VALUES (999, 'Teste', '00000', 'teste9@gmail.com', '$2b$12$nWUp63PwH40zXMAWiulc.eOjH9J9EMlGJ220tglhwraSaQsDKjpOW');
-
 
 -- Tabela de Clientes
 CREATE TABLE Clientes (
@@ -49,7 +46,6 @@ CREATE TABLE Usuario_Cliente (
 
 -- Índice para a tabela de Usuário_Cliente
 CREATE INDEX idx_usuario_cliente ON Usuario_Cliente(id_usuario, cliente_id);
-
 
 -- Trigger para auditoria no cadastro de usuários
 CREATE OR REPLACE FUNCTION auditoria_usuario()

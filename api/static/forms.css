@@ -1,0 +1,116 @@
+/* Formulário */
+.form-container {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    margin: auto; /* Centraliza o formulário na tela */
+}
+
+/* Título */
+.title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #2d3748;
+    text-align: center;
+}
+
+/* Estilos para os campos de entrada */
+.input-group {
+    margin-bottom: 20px;
+    text-align: left; /* Garante que os campos estejam alinhados à esquerda */
+}
+
+/* Rótulos dos campos */
+.input-label {
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Caixa de Seleção de País e outros Inputs */
+.select-wrapper, .input-wrapper {
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    width: 100%;
+}
+
+.icon {
+    padding: 10px;
+    background-color: #edf2f7;
+    color: #4a5568;
+}
+
+.input-field, textarea {
+    border: none;
+    padding: 10px 15px;
+    width: 100%;
+    font-size: 16px;
+    border-radius: 8px;
+    text-align: left; /* Alinha o texto dentro dos campos à esquerda */
+    box-sizing: border-box;
+    margin-top: 10px;
+}
+
+.select-option {
+    display: flex;
+    align-items: center;
+}
+
+.input-select {
+    background-color: #f7fafc;
+    font-family: 'Noto Sans', 'Noto Color Emoji', sans-serif;
+    border: none;
+    width: 100%;
+    border-radius: 8px;
+    font-size: 16px;
+    padding: 10px 15px;
+    text-align: left; /* Alinha o texto dentro do select à esquerda */
+}
+
+.flag-icon {
+    margin-right: 8px;
+    font-family: 'Noto Color Emoji';
+}
+
+.input-field {
+    background-color: #f9fafb;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 120px;
+    width: 100%;
+}
+
+/* Estilo para o botão de envio */
+.send-btn {
+    background-color: #25D366;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 30px;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.send-btn i {
+    margin-right: 10px;
+}
+
+.send-btn:hover {
+    background-color: #128C7E;
+}

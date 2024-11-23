@@ -20,7 +20,6 @@ function sendMessage() {
     window.open(whatsappLink, '_blank');
 }
 
-
 document.addEventListener('DOMContentLoaded', function () {
     // Função para obter a lista de países usando a biblioteca do CDN
     function getCountries() {
@@ -40,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
             countries.forEach(country => {
                 const option = document.createElement('option');
                 option.value = country.dial_code; // Usar o código de discagem
-            
+
                 // Adicionar a bandeira e o nome do país com a bandeira como emoji
                 const flag = `<span class="flag-icon">${country.flag}</span>`;
                 const name = country.name;
@@ -48,12 +47,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 option.innerHTML = `${flag} ${name} (${dial_code})`;
                 option.classList.add('select-option');
-            
+
                 countrySelect.appendChild(option);
 
                 // Definir Brasil como padrão 
                 countrySelect.value = '+55';
-            });  
+            });
 
         } catch (error) {
             console.error("Erro ao carregar os países:", error);

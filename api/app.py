@@ -60,10 +60,12 @@ def login():
         if user:
             id_usuario = user['id_usuario']
             hashed_password = user['senha']  # A senha aqui já é a hash
+            nome_usuario = user['nome']
 
             # Verifica se a senha fornecida corresponde à senha armazenada
             if bcrypt.checkpw(senha.encode('utf-8'), hashed_password.encode('utf-8')):
                 session['user_id'] = id_usuario
+                session['user_name'] = nome_usuario
                 create_user_database(id_usuario)  # Cria o banco de dados do usuário
                 create_tables(f'dados_{id_usuario}')  # Chama a função para criar a tabela
                 user_db_name = f"dados_{id_usuario}"
@@ -78,7 +80,8 @@ def login():
 @app.route('/get-user-id', methods=['GET'])
 def get_user_id():
     if 'user_id' in session:
-        return jsonify({'user_id': session['user_id']}), 200
+        user = find_user(session['user_id'])  # Supondo que você tenha uma função para buscar o usuário pelo ID
+        return jsonify({'user_id': session['user_id'], 'user_name': session.get('user_name')}), 200
     else:
         return jsonify({'error': 'Usuário não está logado.'}), 403
 
