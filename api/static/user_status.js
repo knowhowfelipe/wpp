@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     function getUserStatus() {
+        console.log("Vamos capturar a ID do usuario")
         return fetch('/get-user-id')
             .then(response => {
                 if (response.status === 200) {
