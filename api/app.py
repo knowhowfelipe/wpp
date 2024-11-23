@@ -17,13 +17,18 @@ from auth import db, User
 
 # Carrega as variáveis de ambiente do arquivo .env
 load_dotenv()
+db_user = os.getenv('USER')
+db_host = os.getenv('HOST')
+db_password = os.getenv('PASSWORD')
+db_port = os.getenv('PORT')
+db_name = os.getenv('DB_GERAL')
 
 #app = create_app()
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', secrets.token_hex(16))
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://username:admin@localhost:5432/wpp_db'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://neondb_owner:plgM0Dqe7ORX@ep-broad-meadow-a5n9c3kh-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
