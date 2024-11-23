@@ -9,12 +9,11 @@ import random
 from datetime import datetime
 import requests
 import sys
-# Adiciona a pasta 'api' ao PYTHONPATH 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'api')))
-from usuarios import find_user, user_exists, find_user_by_email, verificar_autenticacao, get_db_connection
-from db import get_db_connection, init_user_db, create_user_database, create_tables
-from stripe_plans import stripe_plans_bp
-from auth import db, User
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from api.usuarios import find_user, user_exists, find_user_by_email, verificar_autenticacao, get_db_connection
+from api.db import get_db_connection, init_user_db, create_user_database, create_tables
+from api.stripe_plans import stripe_plans_bp
+from api.auth import db, User
 
 
 

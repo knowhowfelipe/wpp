@@ -13,7 +13,7 @@ from flask import Blueprint, Flask, render_template, jsonify, request, redirect
 import stripe
 import logging
 from datetime import datetime
-from auth import db, User
+from api.auth import db, User
 
 stripe_plans_bp = Blueprint('stripe_plans', __name__)
 

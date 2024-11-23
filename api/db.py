@@ -1,7 +1,7 @@
 import psycopg2
 from psycopg2.extras import DictCursor
 from dotenv import load_dotenv
-from usuarios import get_db_connection
+from api.usuarios import get_db_connection
 import os
 
 # Carrega as variáveis de ambiente do arquivo .env
