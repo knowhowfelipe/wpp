@@ -23,27 +23,29 @@ def verificar_autenticacao(f):
 
 
 def get_db_connection(db_name=None):
-    """Estabelece uma conexão com o banco de dados de usuários."""  
-
+    print("Estabelecendo uma conexão com o banco de dados de usuários.")  
     if db_name is None:
-        db_name = os.environ.get('DB_GERAL')
+        db_name = os.getenv('DB_GERAL')
+    user = os.getenv('USER')
+    password = os.getenv('PASSWORD')
+    host = os.getenv('HOST')
+    # port = os.getenv('PORT')
+
+    print(f"DB Name: {db_name}, User: {user}, Host: {host}")
 
     try:
-        user = os.getenv('USER')
-        password = os.getenv('PASSWORD')
-        host = os.getenv('HOST')
-       # port = os.getenv('PORT')
         conn = psycopg2.connect(
-                dbname=db_name,
-                user=user,
-                password=password,
-                host=host,
-            #    port=port   
+            dbname=db_name,
+            user=user,
+            password=password,
+            host=host,
+            # port=port   
         )
         print("Conexão bem-sucedida!")
         return conn
-    except:
-        print("ERRO AO SE CONECTAR AO BANCO")
+    except psycopg2.Error as e:
+        print(f"ERRO AO SE CONECTAR AO BANCO: {e}")
+        return None
 
 def find_user(codigo_acesso):
     """Busca um usuário pelo código de acesso."""
