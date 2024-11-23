@@ -32,13 +32,13 @@ def get_db_connection(db_name=None):
         user = os.getenv('USER')
         password = os.getenv('PASSWORD')
         host = os.getenv('HOST')
-        port = os.getenv('PORT')
+       # port = os.getenv('PORT')
         conn = psycopg2.connect(
                 dbname=db_name,
                 user=user,
                 password=password,
                 host=host,
-                port=port   
+            #    port=port   
         )
         print("Conexão bem-sucedida!")
         return conn
