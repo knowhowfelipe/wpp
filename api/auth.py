@@ -3,12 +3,14 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 class User(db.Model):
+    __tablename__ = 'USUARIOS'  # Defina o nome da tabela aqui
+
     id_usuario = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), unique=True, nullable=False)
     senha = db.Column(db.String(255), nullable=False)
-    codigo_acesso = db.Column(db.Integer, unique=True, nullable=False)  # Código de acesso único
-    nome = db.Column(db.String(255), nullable=False)  # Nome do usuário
-    identificador_comercial = db.Column(db.String(255), unique=True, nullable=False)  # Identificador comercial único
+    codigo_acesso = db.Column(db.Integer, unique=True, nullable=False)
+    nome = db.Column(db.String(255), nullable=False)
+    identificador_comercial = db.Column(db.String(255), unique=True, nullable=False)
     is_premium = db.Column(db.Boolean, default=False)
     subscription_start_date = db.Column(db.Date)
     subscription_end_date = db.Column(db.Date)
