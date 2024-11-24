@@ -14,8 +14,11 @@ import stripe
 import logging
 from datetime import datetime
 from api.auth import db, User
+from flask_sqlalchemy import SQLAlchemy 
+from sqlalchemy.exc import SQLAlchemyError
 
 stripe_plans_bp = Blueprint('stripe_plans', __name__)
+db = SQLAlchemy()
 
 # Configure sua chave secreta Stripe
 stripe.api_key = "sk_test_51QO4bDClJp9dPNzNNXexw8suWr8QJm9qGqD4OatMp1MkxzlQcJwnbkXUOx5Z2TrRbew7LtLbEuKL0k3etPrBxlFL007TNSN80l"
@@ -95,15 +98,27 @@ def stripe_webhook():
 
     return jsonify(success=True), 200
 
+
 def update_user_to_premium(user_id, stripe_subscription_id, stripe_customer_id):
-    user = User.query.get(user_id)
-    if user:
-        user.is_premium = True
-        user.subscription_start_date = datetime.now()
-        # Defina subscription_end_date se houver um período de assinatura específico
-        user.stripe_subscription_id = stripe_subscription_id
-        user.stripe_customer_id = stripe_customer_id
+    try:
+        # Definir o SQL de atualização diretamente
+        sql = """
+        UPDATE public."Usuarios" 
+        SET is_premium = true,
+            subscription_start_date = NOW(),
+            stripe_subscription_id = :subscription_id,
+            stripe_customer_id = :customer_id
+        WHERE id_usuario = :user_id
+        """
+        # Executar a consulta com os parâmetros
+        db.session.execute(sql, {
+            'subscription_id': stripe_subscription_id,
+            'customer_id': stripe_customer_id,
+            'user_id': user_id
+        })
         db.session.commit()
-        logging.info(f"Usuário {user_id} atualizado para premium")
-    else:
-        logging.error(f"Usuário com ID {user_id} não encontrado")
+        print(f"Usuário {user_id} atualizado para premium")
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        print(f"Erro ao atualizar usuário: {e}")
+
