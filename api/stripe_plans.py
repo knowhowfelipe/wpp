@@ -16,6 +16,7 @@ from datetime import datetime
 from api.auth import db, User
 from flask_sqlalchemy import SQLAlchemy 
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy import text
 
 stripe_plans_bp = Blueprint('stripe_plans', __name__)
 db = SQLAlchemy()
@@ -98,18 +99,17 @@ def stripe_webhook():
 
     return jsonify(success=True), 200
 
-
 def update_user_to_premium(user_id, stripe_subscription_id, stripe_customer_id):
     try:
-        # Definir o SQL de atualização diretamente
-        sql = """
+        # Definir o SQL de atualização diretamente e declarar como texto
+        sql = text("""
         UPDATE public."Usuarios" 
         SET is_premium = true,
             subscription_start_date = NOW(),
             stripe_subscription_id = :subscription_id,
             stripe_customer_id = :customer_id
         WHERE id_usuario = :user_id
-        """
+        """)
         # Executar a consulta com os parâmetros
         db.session.execute(sql, {
             'subscription_id': stripe_subscription_id,
@@ -121,4 +121,3 @@ def update_user_to_premium(user_id, stripe_subscription_id, stripe_customer_id):
     except SQLAlchemyError as e:
         db.session.rollback()
         print(f"Erro ao atualizar usuário: {e}")
-
