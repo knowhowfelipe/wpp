@@ -66,7 +66,7 @@ def cancel():
 def stripe_webhook():
     payload = request.get_data(as_text=True)
     sig_header = request.headers.get('Stripe-Signature')
-    endpoint_secret = 'sua_chave_secreta_do_endpoint'
+    endpoint_secret = 'whsec_FOlf7C7LfKLW86FpeJHozBJYbPUw43EQ'
 
     event = None
 
