@@ -2,3 +2,4 @@ venv/
 __pycache__
 .env
 secret_key_generator.py
+update_repo.bat

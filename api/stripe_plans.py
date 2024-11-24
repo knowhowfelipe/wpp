@@ -20,6 +20,7 @@ stripe_plans_bp = Blueprint('stripe_plans', __name__)
 # Configure sua chave secreta Stripe
 stripe.api_key = "sk_test_51QO4bDClJp9dPNzNNXexw8suWr8QJm9qGqD4OatMp1MkxzlQcJwnbkXUOx5Z2TrRbew7LtLbEuKL0k3etPrBxlFL007TNSN80l"
 
+
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
 
@@ -27,6 +28,10 @@ logging.basicConfig(level=logging.INFO)
 def create_checkout_session():
     id_usuario = request.json.get('id_usuario')
     logging.info(f"id_usuario recebido: {id_usuario}")
+
+    success_url = request.host_url + 'success'
+    cancel_url = request.host_url + 'cancel'
+
     try:
         checkout_session = stripe.checkout.Session.create(
             payment_method_types=['card'],
@@ -37,8 +42,8 @@ def create_checkout_session():
                 },
             ],
             mode='subscription',
-            success_url='http://localhost:5000/success',
-            cancel_url='http://localhost:5000/cancel',
+            success_url=success_url,
+            cancel_url=cancel_url,
             client_reference_id=id_usuario
         )
         logging.info(f"Sessão de checkout criada: {checkout_session.id}")
