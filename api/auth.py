@@ -3,7 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 class User(db.Model):
-    __tablename__ = 'USUARIOS'  # Defina o nome da tabela aqui
+    __tablename__ = 'Usuarios'
+    __table_args__ = {'schema': 'public'}  # Esquema público explicitamente definido
 
     id_usuario = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), unique=True, nullable=False)
