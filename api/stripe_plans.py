@@ -28,6 +28,29 @@ stripe.api_key = "sk_test_51QO4bDClJp9dPNzNNXexw8suWr8QJm9qGqD4OatMp1MkxzlQcJwnb
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
 
+def update_user_to_premium(user_id, stripe_subscription_id, stripe_customer_id):
+    try:
+        # Definir o SQL de atualização diretamente e declarar como texto
+        sql = text("""
+        UPDATE USUARIOS
+        SET is_premium = true,
+            subscription_start_date = NOW(),
+            stripe_subscription_id = :subscription_id,
+            stripe_customer_id = :customer_id
+        WHERE id_usuario = :user_id
+        """)
+        # Executar a consulta com os parâmetros
+        db.session.execute(sql, {
+            'subscription_id': stripe_subscription_id,
+            'customer_id': stripe_customer_id,
+            'user_id': user_id
+        })
+        db.session.commit()
+        print(f"Usuário {user_id} atualizado para premium")
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        print(f"Erro ao atualizar usuário: {e}")
+
 @stripe_plans_bp.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
     id_usuario = request.json.get('id_usuario')
@@ -99,25 +122,4 @@ def stripe_webhook():
 
     return jsonify(success=True), 200
 
-def update_user_to_premium(user_id, stripe_subscription_id, stripe_customer_id):
-    try:
-        # Definir o SQL de atualização diretamente e declarar como texto
-        sql = text("""
-        UPDATE USUARIOS
-        SET is_premium = true,
-            subscription_start_date = NOW(),
-            stripe_subscription_id = :subscription_id,
-            stripe_customer_id = :customer_id
-        WHERE id_usuario = :user_id
-        """)
-        # Executar a consulta com os parâmetros
-        db.session.execute(sql, {
-            'subscription_id': stripe_subscription_id,
-            'customer_id': stripe_customer_id,
-            'user_id': user_id
-        })
-        db.session.commit()
-        print(f"Usuário {user_id} atualizado para premium")
-    except SQLAlchemyError as e:
-        db.session.rollback()
-        print(f"Erro ao atualizar usuário: {e}")
+
