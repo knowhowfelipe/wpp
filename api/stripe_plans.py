@@ -103,7 +103,7 @@ def update_user_to_premium(user_id, stripe_subscription_id, stripe_customer_id):
     try:
         # Definir o SQL de atualização diretamente e declarar como texto
         sql = text("""
-        UPDATE public."Usuarios" 
+        UPDATE USUARIOS
         SET is_premium = true,
             subscription_start_date = NOW(),
             stripe_subscription_id = :subscription_id,
