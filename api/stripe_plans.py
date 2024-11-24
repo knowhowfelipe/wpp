@@ -21,12 +21,19 @@ from sqlalchemy import text
 stripe_plans_bp = Blueprint('stripe_plans', __name__)
 db = SQLAlchemy()
 
+# Crie o aplicativo Flask
+app = Flask(__name__)
+
 # Configure sua chave secreta Stripe
 stripe.api_key = "sk_test_51QO4bDClJp9dPNzNNXexw8suWr8QJm9qGqD4OatMp1MkxzlQcJwnbkXUOx5Z2TrRbew7LtLbEuKL0k3etPrBxlFL007TNSN80l"
 
-
-# Configurar logging
+# Configuração de logging
 logging.basicConfig(level=logging.INFO)
+
+# Configuração do banco de dados
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sua_uri_do_banco_de_dados_aqui'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db.init_app(app)
 
 @stripe_plans_bp.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
@@ -86,7 +93,7 @@ def stripe_webhook():
         return jsonify(success=False), 400
 
     if event['type'] == 'checkout.session.completed':
-        print("CHECKOU COMPLETO")
+        print("CHECKOUT COMPLETO")
         session = event['data']['object']
         print(session)
         user_id = session['client_reference_id']
@@ -121,3 +128,6 @@ def update_user_to_premium(user_id, stripe_subscription_id, stripe_customer_id):
     except SQLAlchemyError as e:
         db.session.rollback()
         print(f"Erro ao atualizar usuário: {e}")
+
+# Finalmente, registrar o blueprint
+app.register_blueprint(stripe_plans_bp)
