@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const stripe = Stripe('pk_test_51QO4bDClJp9dPNzNZume9C1l88aNt7gNY2lDe5vH8Zl1j341TVJrD1grpmo9fh59qZERsxdKXOaUqsCj5GXovSwo00TPcyhrCM');
+    const stripePublicKey = "{{ stripe_public_key }}";
+    const stripe = Stripe(stripePublicKey);
     const migratePlanButton = document.querySelector('#migrate-plan');
 
     migratePlanButton.addEventListener('click', function() {

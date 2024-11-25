@@ -50,7 +50,8 @@ def index():
 #    if 'user_id' in session:
 #        return redirect(url_for('form'))  # Redireciona para a página form se estiver autenticado
 #    return redirect(url_for('login'))  # Redireciona para a página de login se não estiver autenticado
-    return render_template('form.html')
+    stripe_public_key = os.getenv('STRIPE_PUBLIC_KEY')
+    return render_template('form.html', stripe_public_key=stripe_public_key)
 
 @app.route('/form')
 def form():

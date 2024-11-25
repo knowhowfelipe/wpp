@@ -10,6 +10,7 @@
 
 import os
 from flask import Blueprint, Flask, render_template, jsonify, request, redirect
+from dotenv import load_dotenv
 import stripe
 import logging
 from datetime import datetime
@@ -17,8 +18,15 @@ from api.models.stripe_model import db, Usuario
 
 stripe_plans_bp = Blueprint('stripe_plans', __name__)
 
+load_dotenv()
+stripe_api_key = os.getenv('STRIPE_SECRET_KEY')
+stripe_public_key = os.getenv('STRIPE_PUBLIC_KEY')
+
+webhook_id_checkout = 'we_1QP6ThK91woPpT0pPoRwTOwr'
+
 # Configure sua chave secreta Stripe
-stripe.api_key = "sk_test_51QO4bDClJp9dPNzNNXexw8suWr8QJm9qGqD4OatMp1MkxzlQcJwnbkXUOx5Z2TrRbew7LtLbEuKL0k3etPrBxlFL007TNSN80l"
+# stripe.api_key = "sk_test_51QO4bDClJp9dPNzNNXexw8suWr8QJm9qGqD4OatMp1MkxzlQcJwnbkXUOx5Z2TrRbew7LtLbEuKL0k3etPrBxlFL007TNSN80l"
+stripe.api_key = stripe_api_key
 
 
 # Configurar logging
@@ -88,7 +96,7 @@ def cancel():
 def stripe_webhook():
     payload = request.get_data(as_text=True)
     sig_header = request.headers.get('Stripe-Signature')
-    endpoint_secret = 'whsec_FOlf7C7LfKLW86FpeJHozBJYbPUw43EQ'
+    endpoint_secret = webhook_id_checkout
 
     try:
         event = stripe.Webhook.construct_event(
