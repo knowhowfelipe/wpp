@@ -158,5 +158,21 @@ def register():
 
     return render_template('register.html')
 
+@app.route('/politica-de-devolucoes')
+def politica_de_devolucoes():
+    return render_template('politica-de-devolucoes.html')
+
+@app.route('/politica-de-reembolsos')
+def politica_de_reembolsos():
+    return render_template('politica-de-reembolsos.html')
+
+@app.route('/politica-de-cancelamento')
+def politica_de_cancelamento():
+    return render_template('politica-de-cancelamento.html')
+
+@app.route('/termos-e-condicoes')
+def termos_e_condicoes():
+    return render_template('termos-e-condicoes.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
