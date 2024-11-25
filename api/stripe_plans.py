@@ -10,17 +10,12 @@
 
 import os
 from flask import Blueprint, Flask, render_template, jsonify, request, redirect
-from dotenv import load_dotenv
 import stripe
 import logging
 from datetime import datetime
 from api.models.stripe_model import db, Usuario
 
 stripe_plans_bp = Blueprint('stripe_plans', __name__)
-
-load_dotenv()
-stripe_api_key = os.getenv('STRIPE_SECRET_KEY')
-#stripe_public_key = os.getenv('STRIPE_PUBLIC_KEY')
 
 webhook_id_checkout = 'whsec_ir0923prKOg3X90v8ND3IzdOuV5fvH2s'
 
