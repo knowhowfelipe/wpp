@@ -13,8 +13,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from api.usuarios import find_user, user_exists, find_user_by_email, verificar_autenticacao, get_db_connection
 from api.db import get_db_connection, init_user_db, create_user_database, create_tables
 from api.stripe_plans import stripe_plans_bp
-from api.auth import db, User
-
+from api.models.stripe_model import db, Usuario
 
 
 # Carrega as variáveis de ambiente do arquivo .env
