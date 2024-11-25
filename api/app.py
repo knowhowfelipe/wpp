@@ -1,5 +1,6 @@
 #from __init__ import create_app
 from flask import Flask, jsonify, request, render_template, redirect, url_for, session
+from flask_login import current_user, login_required
 from psycopg2.extras import DictCursor
 import secrets
 import os
@@ -89,12 +90,21 @@ def login():
 
 @app.route('/get-user-id', methods=['GET'])
 def get_user_id():
-    print(f"Session data: {session}")  # Adicione esta linha para depurar a sessão
+    print(f"Session data: {session}")  # Depurar a sessão
     if 'user_id' in session:
         user = find_user(session['user_id'])  # Supondo que você tenha uma função para buscar o usuário pelo ID
         return jsonify({'user_id': session['user_id'], 'user_name': session.get('user_name')}), 200
     else:
         return jsonify({'error': 'Usuário não está logado.'}), 403
+
+@app.route('/get-user-status', methods=['GET'])
+def get_user_status():
+    if 'user_id' in session:
+        user = find_user(session['user_id'])  # Supondo que você tenha uma função para buscar o usuário pelo ID
+        if user:
+            return jsonify(is_premium=user.is_premium)
+    return jsonify(is_premium=False)
+
 
 
 @app.route('/logout')

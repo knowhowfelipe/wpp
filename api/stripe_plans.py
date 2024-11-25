@@ -135,3 +135,45 @@ def stripe_webhook():
             return jsonify(success=False), 500
 
     return jsonify(success=True), 200
+
+@stripe_plans_bp.route('/get-subscription-details', methods=['GET'])
+def get_subscription_details():
+    if 'user_id' in session:
+        user = Usuario.query.filter_by(id_usuario=session['user_id']).first()
+        if user and user.stripe_subscription_id:
+            try:
+                subscription = stripe.Subscription.retrieve(user.stripe_subscription_id)
+                subscription_details = {
+                    'id': subscription.id,
+                    'status': subscription.status,
+                    'start_date': subscription.start_date,
+                    'current_period_end': subscription.current_period_end
+                }
+                return jsonify(subscription=subscription_details), 200
+            except stripe.error.StripeError as e:
+                logging.error(f"Erro ao recuperar detalhes da assinatura: {e}")
+                return jsonify(error="Erro ao recuperar detalhes da assinatura"), 500
+        else:
+            return jsonify(error="Usuário não possui uma assinatura ativa"), 404
+    else:
+        return jsonify(error="Usuário não está logado"), 403
+    
+@stripe_plans_bp.route('/cancel-subscription', methods=['POST'])
+def cancel_subscription():
+    if 'user_id' in session:
+        user = Usuario.query.filter_by(id_usuario=session['user_id']).first()
+        if user and user.stripe_subscription_id:
+            try:
+                subscription = stripe.Subscription.retrieve(user.stripe_subscription_id)
+                subscription.delete()
+                user.is_premium = False
+                user.subscription_end_date = datetime.now()
+                db.session.commit()
+                return jsonify(success=True), 200
+            except stripe.error.StripeError as e:
+                logging.error(f"Erro ao cancelar a assinatura: {e}")
+                return jsonify(error="Erro ao cancelar a assinatura"), 500
+        else:
+            return jsonify(error="Usuário não possui uma assinatura ativa"), 404
+    else:
+        return jsonify(error="Usuário não está logado"), 403

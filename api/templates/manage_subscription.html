@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enviar Mensagem no WhatsApp</title>
+    <title>Gerenciar Assinatura</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -17,12 +17,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='forms.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='emoji.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='respo.css') }}">
-    <!-- Emoji Picker -->
-    <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@latest/index.js"></script>
-    <!-- Stripe JS -->
-    <script src="https://js.stripe.com/v3/"></script>
-    <!-- Country List CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/country-list-with-dial-code-and-flag@latest/dist/main.js"></script>
 </head>
 <body>
     <!-- Navegação -->
@@ -44,7 +38,7 @@
                         <a class="nav-link" href="/create_list">Criar Lista</a>
                     </li>
                     <li class="nav-item">
-                        <div id="subscription-action"></div> <!-- Placeholder para o botão dinâmico -->
+                        <a class="nav-link" href="/manage-subscription">Gerenciar Assinatura</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav">
@@ -59,41 +53,18 @@
     <!-- Conteúdo Principal -->
     <div class="main-container">
         <div class="form-container shadow-lg p-4 mb-5 bg-body rounded">
-            <h1 class="title text-center">Enviar Mensagem no WhatsApp</h1>
+            <h1 class="title text-center">Gerenciar Assinatura</h1>
             
-            <!-- Seleção de País -->
-            <div class="input-group mb-3">
-                <label for="country" class="input-label"></label>
-                <div class="select-wrapper">
-                    <span class="icon"><i class="fas fa-globe"></i></span>
-                    <select class="input-select form-control" id="country"></select>
-                </div>
+            <!-- Detalhes da Assinatura -->
+            <div id="subscription-details" class="mb-3">
+                <!-- Detalhes serão preenchidos via JavaScript -->
             </div>
 
-            <!-- Número de Telefone -->
-            <div class="input-group mb-3">
-                <label for="phoneNumber" class="input-label"></label>
-                <div class="input-wrapper">
-                    <span class="icon"><i class="fas fa-phone"></i></span>
-                    <input type="text" class="input-field form-control" id="phoneNumber" placeholder="Número de Telefone">
-                </div>
-            </div>
+            <!-- Botão para Cancelar Assinatura -->
+            <button id="cancel-subscription-btn" class="btn btn-danger w-100 mb-3">Cancelar Assinatura</button>
 
-            <!-- Mensagem -->
-            <div class="input-group mb-3">
-                <label for="message" class="input-label"></label>
-                <div class="input-wrapper">
-                    <span class="icon"><i class="fas fa-comment"></i></span>
-                    <textarea class="input-field form-control" id="message" rows="4" placeholder="Digite sua mensagem"></textarea>
-                    <button type="button" id="emoji-btn" class="emoji-btn-c btn"><i class="fas fa-smile"></i></button>
-                </div>
-                <div id="emoji-picker" class="emoji-picker"></div> <!-- Contêiner para emojis -->
-            </div>            
-            
-            <!-- Botão de Envio -->
-            <button type="button" class="send-btn btn btn-success w-100" onclick="sendMessage()">
-                <i class="fas fa-paper-plane"></i> Enviar
-            </button>
+            <!-- Botão para Atualizar Plano -->
+            <button id="update-subscription-btn" class="btn btn-primary w-100">Atualizar Plano</button>
         </div>
     </div>
 
@@ -118,9 +89,6 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Scripts Personalizados -->
-    <script src="{{ url_for('static', filename='form_scripts.js') }}"></script>
-    <script src="{{ url_for('static', filename='emoji-picker.js') }}"></script>
-    <script src="{{ url_for('static', filename='stripe_plans.js') }}"></script>
-    <script src="{{ url_for('static', filename='user_status.js') }}"></script>
+    <script src="{{ url_for('static', filename='manage_subscription.js') }}"></script>
 </body>
 </html>
