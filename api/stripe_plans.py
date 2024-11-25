@@ -20,12 +20,11 @@ stripe_plans_bp = Blueprint('stripe_plans', __name__)
 
 load_dotenv()
 stripe_api_key = os.getenv('STRIPE_SECRET_KEY')
-stripe_public_key = os.getenv('STRIPE_PUBLIC_KEY')
+#stripe_public_key = os.getenv('STRIPE_PUBLIC_KEY')
 
 webhook_id_checkout = 'we_1QP6ThK91woPpT0pPoRwTOwr'
 
 # Configure sua chave secreta Stripe
-# stripe.api_key = "sk_test_51QO4bDClJp9dPNzNNXexw8suWr8QJm9qGqD4OatMp1MkxzlQcJwnbkXUOx5Z2TrRbew7LtLbEuKL0k3etPrBxlFL007TNSN80l"
 stripe.api_key = stripe_api_key
 
 
