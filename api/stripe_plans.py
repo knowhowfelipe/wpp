@@ -6,7 +6,7 @@
 # Visa: 4242 4242 4242 4242
 # Mastercard: 5555 5555 5555 4444
 # Falha de pagamento: 4000 0000 0000 9995
-# Use qualquer data de validade futura e qualquer CVC (por exemplo, 123).
+# Use qualquer data de validade futura e qualquer CVC (por exemplo, 123). top
 
 import os
 from flask import Blueprint, Flask, render_template, jsonify, request, redirect
