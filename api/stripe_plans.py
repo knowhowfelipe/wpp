@@ -13,13 +13,9 @@ from flask import Blueprint, Flask, render_template, jsonify, request, redirect
 import stripe
 import logging
 from datetime import datetime
-from api.auth import db, User
-from flask_sqlalchemy import SQLAlchemy 
-from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy import text
+from api.models.stripe_model import db, Usuario
 
 stripe_plans_bp = Blueprint('stripe_plans', __name__)
-db = SQLAlchemy()
 
 # Configure sua chave secreta Stripe
 stripe.api_key = "sk_test_51QO4bDClJp9dPNzNNXexw8suWr8QJm9qGqD4OatMp1MkxzlQcJwnbkXUOx5Z2TrRbew7LtLbEuKL0k3etPrBxlFL007TNSN80l"
@@ -27,29 +23,6 @@ stripe.api_key = "sk_test_51QO4bDClJp9dPNzNNXexw8suWr8QJm9qGqD4OatMp1MkxzlQcJwnb
 
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
-
-def update_user_to_premium(user_id, stripe_subscription_id, stripe_customer_id):
-    try:
-        # Definir o SQL de atualização diretamente e declarar como texto
-        sql = text("""
-        UPDATE USUARIOS
-        SET is_premium = true,
-            subscription_start_date = NOW(),
-            stripe_subscription_id = :subscription_id,
-            stripe_customer_id = :customer_id
-        WHERE id_usuario = :user_id
-        """)
-        # Executar a consulta com os parâmetros
-        db.session.execute(sql, {
-            'subscription_id': stripe_subscription_id,
-            'customer_id': stripe_customer_id,
-            'user_id': user_id
-        })
-        db.session.commit()
-        print(f"Usuário {user_id} atualizado para premium")
-    except SQLAlchemyError as e:
-        db.session.rollback()
-        print(f"Erro ao atualizar usuário: {e}")
 
 @stripe_plans_bp.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
@@ -118,7 +91,10 @@ def stripe_webhook():
         stripe_customer_id = session['customer']
         print(stripe_customer_id)
         logging.info(f"Evento recebido para user_id: {user_id}, subscription_id: {stripe_subscription_id}, customer_id: {stripe_customer_id}")
-        update_user_to_premium(user_id, stripe_subscription_id, stripe_customer_id)
+        
+        user = Usuario.query.filter_by(id_usuario=user_id).first()
+        if user:
+            user.update_to_premium(stripe_subscription_id, stripe_customer_id)
 
     return jsonify(success=True), 200
 
