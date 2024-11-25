@@ -105,8 +105,6 @@ def get_user_status():
             return jsonify(is_premium=user.is_premium)
     return jsonify(is_premium=False)
 
-
-
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)
