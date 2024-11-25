@@ -114,16 +114,24 @@ def stripe_webhook():
 
         logging.info(f"Evento recebido para user_id: {user_id}, subscription_id: {stripe_subscription_id}, customer_id: {stripe_customer_id}")
 
-        user = Usuario.query.filter_by(id_usuario=user_id).first()
-        if user:
-            try:
+        try:
+            # Buscar detalhes da assinatura no Stripe
+            subscription = stripe.Subscription.retrieve(stripe_subscription_id)
+            subscription_start_date = datetime.utcfromtimestamp(subscription.start_date)
+            subscription_end_date = datetime.utcfromtimestamp(subscription.current_period_end)
+
+            user = Usuario.query.filter_by(id_usuario=user_id).first()
+            if user:
                 user.update_to_premium(stripe_subscription_id, stripe_customer_id)
-                logging.info(f"Usuário {user_id} atualizado para premium com sucesso.")
-            except Exception as e:
-                logging.error(f"Erro ao atualizar o usuário: {e}")
-                return jsonify(success=False), 500
-        else:
-            logging.error(f"Usuário com id {user_id} não encontrado.")
-            return jsonify(success=False), 404
+                user.subscription_start_date = subscription_start_date
+                user.subscription_end_date = subscription_end_date
+                db.session.commit()
+                logging.info(f"Usuário {user_id} atualizado para premium com início da assinatura: {subscription_start_date} e término: {subscription_end_date}")
+            else:
+                logging.error(f"Usuário com id {user_id} não encontrado.")
+                return jsonify(success=False), 404
+        except Exception as e:
+            logging.error(f"Erro ao atualizar o usuário: {e}")
+            return jsonify(success=False), 500
 
     return jsonify(success=True), 200
