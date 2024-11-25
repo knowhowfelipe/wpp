@@ -66,7 +66,7 @@ def create_checkout_session():
             payment_method_types=['card'],
             line_items=[
                 {
-                    'price': 'price_1QO4d6ClJp9dPNzNwWRwSWPs',  # Substitua pelo ID do preço do produto criado no Stripe
+                    'price': 'price_1QP65zK91woPpT0pSLqNahTS',  # Substitua pelo ID do preço do produto criado no Stripe
                     'quantity': 1,
                 },
             ],
