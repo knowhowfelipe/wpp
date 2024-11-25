@@ -1,3 +1,4 @@
+console.log("stripe_plans.js carregado.");
 document.addEventListener('DOMContentLoaded', function () {
     const stripe = Stripe('pk_test_51QP5dNK91woPpT0pRCeyyPLF4Qgw9uZ1rX2Ax97odChUbKr2gCtyFasExcuNQ0Z9pS0HblBZFeE0NGFcWWdpHqo300usQIqplN');
     const migratePlanButton = document.querySelector('#migrate-plan');
