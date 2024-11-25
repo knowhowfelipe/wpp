@@ -62,32 +62,4 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Chama a função para preencher a lista de países
     getCountries();
-
-    // Função para alternar o menu suspenso
-    function toggleMenu() {
-        const menu = document.getElementById('menu');
-        menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'block' : 'none';
-    }
-
-    // Adiciona o event listener ao botão de menu dentro do DOMContentLoaded
-    const menuToggleBtn = document.querySelector('.menu-toggle-btn');
-    menuToggleBtn.addEventListener('click', toggleMenu);
-
-    // Fechar o menu ao clicar fora do menu ou do botão
-    document.addEventListener('click', function (event) {
-        const menu = document.getElementById('menu');
-        const menuBtn = document.querySelector('.menu-toggle-btn');
-
-        if (!menu.contains(event.target) && !menuBtn.contains(event.target)) {
-            menu.style.display = 'none';
-        }
-    });
-
-    // Fechar o menu automaticamente quando um item for clicado
-    const menuItems = document.querySelectorAll('.menu-list a');
-    menuItems.forEach(item => {
-        item.addEventListener('click', () => {
-            document.getElementById('menu').style.display = 'none';
-        });
-    });
 });
