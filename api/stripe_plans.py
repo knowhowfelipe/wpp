@@ -25,7 +25,7 @@ stripe_api_key = os.getenv('STRIPE_SECRET_KEY')
 webhook_id_checkout = 'whsec_QiwrpVbj6NbX4ZV04HxDb2XgkHpIQL5O'
 
 # Configure sua chave secreta Stripe
-stripe.api_key = stripe_api_key
+stripe.api_key = "sk_test_51QP5dNK91woPpT0pqb1XBMZhny7iu9KuZVxtbR6fBZsukvFSL4i37x16hFAlMctHOtq3oWlKXXVbNI2nVL7VtgB100b49mg4Db"
 
 
 # Configurar logging
