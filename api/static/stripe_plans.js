@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     
-    const stripePublicKey = "pk_test_51QP5dNK91woPpT0pRCeyyPLF4Qgw9uZ1rX2Ax97odChUbKr2gCtyFasExcuNQ0Z9pS0HblBZFeE0NGFcWWdpHqo300usQIqplN";
+    const stripePublicKey = 'pk_test_51QP5dNK91woPpT0pRCeyyPLF4Qgw9uZ1rX2Ax97odChUbKr2gCtyFasExcuNQ0Z9pS0HblBZFeE0NGFcWWdpHqo300usQIqplN';
     const stripe = Stripe(stripePublicKey);
     const migratePlanButton = document.querySelector('#migrate-plan');
     // const stripePublicKey = "{{ stripe_public_key }}";

@@ -22,7 +22,7 @@ load_dotenv()
 stripe_api_key = os.getenv('STRIPE_SECRET_KEY')
 #stripe_public_key = os.getenv('STRIPE_PUBLIC_KEY')
 
-webhook_id_checkout = 'whsec_QiwrpVbj6NbX4ZV04HxDb2XgkHpIQL5O'
+webhook_id_checkout = 'whsec_ir0923prKOg3X90v8ND3IzdOuV5fvH2s'
 
 # Configure sua chave secreta Stripe
 stripe.api_key = "sk_test_51QP5dNK91woPpT0pqb1XBMZhny7iu9KuZVxtbR6fBZsukvFSL4i37x16hFAlMctHOtq3oWlKXXVbNI2nVL7VtgB100b49mg4Db"
@@ -95,7 +95,7 @@ def cancel():
 def stripe_webhook():
     payload = request.get_data(as_text=True)
     sig_header = request.headers.get('Stripe-Signature')
-    endpoint_secret = webhook_id_checkout
+    endpoint_secret = 'whsec_ir0923prKOg3X90v8ND3IzdOuV5fvH2s'
 
     try:
         event = stripe.Webhook.construct_event(
