@@ -29,6 +29,27 @@ def create_checkout_session():
     id_usuario = request.json.get('id_usuario')
     logging.info(f"id_usuario recebido: {id_usuario}")
 
+    # Verificar se o usuário já possui um stripe_customer_id
+    usuario = Usuario.query.filter_by(id_usuario=id_usuario).first()
+    if not usuario:
+        return jsonify(error="Usuário não encontrado"), 404
+
+    stripe_customer_id = usuario.stripe_customer_id
+
+    # Se o usuário não tiver um stripe_customer_id, cria um novo cliente no Stripe
+    if not stripe_customer_id:
+        try:
+            customer = stripe.Customer.create(
+                description=f"Cliente para o usuário {usuario.nome}",
+                email=usuario.email
+            )
+            stripe_customer_id = customer.id
+            usuario.stripe_customer_id = stripe_customer_id
+            db.session.commit()
+        except Exception as e:
+            logging.error(f"Erro ao criar cliente no Stripe: {e}")
+            return jsonify(error=str(e)), 403
+
     success_url = request.host_url + 'success'
     cancel_url = request.host_url + 'cancel'
 
@@ -44,7 +65,8 @@ def create_checkout_session():
             mode='subscription',
             success_url=success_url,
             cancel_url=cancel_url,
-            client_reference_id=id_usuario
+            client_reference_id=id_usuario,
+            customer=stripe_customer_id
         )
         logging.info(f"Sessão de checkout criada: {checkout_session.id}")
         return jsonify({
@@ -68,8 +90,6 @@ def stripe_webhook():
     sig_header = request.headers.get('Stripe-Signature')
     endpoint_secret = 'whsec_FOlf7C7LfKLW86FpeJHozBJYbPUw43EQ'
 
-    event = None
-
     try:
         event = stripe.Webhook.construct_event(
             payload, sig_header, endpoint_secret
@@ -82,20 +102,28 @@ def stripe_webhook():
         return jsonify(success=False), 400
 
     if event['type'] == 'checkout.session.completed':
-        print("CHECKOU COMPLETO")
+        logging.info("Checkout concluído com sucesso.")
         session = event['data']['object']
-        print(session)
-        user_id = session['client_reference_id']
-        stripe_subscription_id = session['subscription']
-        print(stripe_subscription_id)
-        stripe_customer_id = session['customer']
-        print(stripe_customer_id)
+        user_id = session.get('client_reference_id')
+        stripe_subscription_id = session.get('subscription')
+        stripe_customer_id = session.get('customer')
+
+        if not all([user_id, stripe_subscription_id, stripe_customer_id]):
+            logging.error("Dados incompletos no evento de webhook.")
+            return jsonify(success=False), 400
+
         logging.info(f"Evento recebido para user_id: {user_id}, subscription_id: {stripe_subscription_id}, customer_id: {stripe_customer_id}")
-        
+
         user = Usuario.query.filter_by(id_usuario=user_id).first()
         if user:
-            user.update_to_premium(stripe_subscription_id, stripe_customer_id)
+            try:
+                user.update_to_premium(stripe_subscription_id, stripe_customer_id)
+                logging.info(f"Usuário {user_id} atualizado para premium com sucesso.")
+            except Exception as e:
+                logging.error(f"Erro ao atualizar o usuário: {e}")
+                return jsonify(success=False), 500
+        else:
+            logging.error(f"Usuário com id {user_id} não encontrado.")
+            return jsonify(success=False), 404
 
     return jsonify(success=True), 200
-
-

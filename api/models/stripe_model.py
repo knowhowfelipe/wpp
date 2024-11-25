@@ -6,7 +6,7 @@ from datetime import datetime
 db = SQLAlchemy()
 
 class Usuario(db.Model):
-    __tablename__ = 'usuarios'  # Nome da tabela atualizado para minúsculas
+    __tablename__ = 'usuarios'  # Nome da tabela atualizado para minúsculas, EXATAMENTE como na tabela, pois trata como string
     id_usuario = db.Column(db.Integer, primary_key=True)
     codigo_acesso = db.Column(db.Integer, unique=True, nullable=False)
     nome = db.Column(db.String(255), nullable=False)
