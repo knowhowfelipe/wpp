@@ -1,6 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
     const subscriptionAction = document.getElementById('subscription-action');
 
+    if (!subscriptionAction) {
+        console.error('Elemento subscription-action não encontrado.');
+        return;
+    }
+
     // Verifica o status da assinatura do usuário
     fetch('/get-user-status', {
         method: 'GET',
@@ -22,8 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
 
             // Adicionar event listener para o botão de assinar
-            const migratePlanButton = document.querySelector('#migrate-plan');
-            migratePlanButton.addEventListener('click', function() {
+            document.querySelector('#migrate-plan').addEventListener('click', function() {
                 // Obtém o ID do usuário da sessão
                 fetch('/get-user-id', {
                     method: 'GET',
