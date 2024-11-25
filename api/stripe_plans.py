@@ -22,7 +22,7 @@ load_dotenv()
 stripe_api_key = os.getenv('STRIPE_SECRET_KEY')
 #stripe_public_key = os.getenv('STRIPE_PUBLIC_KEY')
 
-webhook_id_checkout = 'we_1QP6ThK91woPpT0pPoRwTOwr'
+webhook_id_checkout = 'whsec_QiwrpVbj6NbX4ZV04HxDb2XgkHpIQL5O'
 
 # Configure sua chave secreta Stripe
 stripe.api_key = stripe_api_key
