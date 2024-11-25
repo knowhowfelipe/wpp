@@ -44,7 +44,7 @@
                         <a class="nav-link" href="/create_list">Criar Lista</a>
                     </li>
                     <li class="nav-item">
-                        <div id="subscription-action"></div> <!-- Placeholder para o botão dinâmico -->
+                        <a class="nav-link" href="#" id="migrate-plan">Migrar Plano</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav">
@@ -100,7 +100,7 @@
     <!-- Informações Adicionais -->
     <div class="container mt-5">
         <h2>Sobre Nós</h2>
-        <p>Envia mensagem via WhatsApp sem necessidade de ter o contato salvo!</p>
+        <p>Envia mensagem via WhatsApp sem necessidade de ter o contato</p>
 
         <h2>Contato</h2>
         <p>Email: felipe-adm@outlook.com.br<br>
@@ -121,5 +121,6 @@
     <script src="{{ url_for('static', filename='form_scripts.js') }}"></script>
     <script src="{{ url_for('static', filename='emoji-picker.js') }}"></script>
     <script src="{{ url_for('static', filename='stripe_plans.js') }}"></script>
+    <script src="{{ url_for('static', filename='user_status.js') }}"></script>
 </body>
 </html>
