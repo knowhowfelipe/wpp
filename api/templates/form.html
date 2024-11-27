@@ -47,7 +47,7 @@
                         <a class="nav-link" href="/create_list">Criar Lista</a>
                     </li>
                     <li class="nav-item">
-                        <button class="nav-link" id="migrate-plan">Migrar Plano</button>
+                        <a class="nav-link" href="#" id="migrate-plan">Migrar Plano</a>
                     </li>
                     <li class="nav-item">
                         <div id="subscription-action"></div> <!-- Placeholder para o botão dinâmico -->
@@ -62,6 +62,21 @@
         </div>
     </nav>
 
+    <!-- Descrição da Empresa -->
+    <section class="company-description text-center py-5 bg-light">
+        <div class="container">
+            <h2>Bem-vindo ao Whats Send!</h2>
+            <p class="lead">Oferecemos uma solução prática e rápida para enviar mensagens via WhatsApp a números que não estão salvos no seu catálogo.</p>
+            <p>Com o Whats Send, você pode:</p>
+            <ul class="list-unstyled">
+                <li><i class="fas fa-check-circle text-success"></i> Enviar mensagens para qualquer número de telefone diretamente pelo WhatsApp.</li>
+                <li><i class="fas fa-check-circle text-success"></i> Adicionar emojis às suas mensagens para torná-las mais expressivas.</li>
+                <li><i class="fas fa-check-circle text-success"></i> Selecionar rapidamente o país do destinatário com nossa lista integrada.</li>
+            </ul>
+            <p>Seja para negócios ou uso pessoal, nós facilitamos a sua comunicação instantânea pelo WhatsApp. Experimente agora e veja como é fácil!</p>
+        </div>
+    </section>
+
     <!-- Conteúdo Principal -->
     <div class="main-container">
         <div class="form-container shadow-lg p-4 mb-5 bg-body rounded">
@@ -69,7 +84,7 @@
             
             <!-- Seleção de País -->
             <div class="input-group mb-3">
-                <label for="country" class="input-label"></label>
+                <label for="country" class="input-label">Selecione o País</label>
                 <div class="select-wrapper">
                     <span class="icon"><i class="fas fa-globe"></i></span>
                     <select class="input-select form-control" id="country"></select>
@@ -78,7 +93,7 @@
 
             <!-- Número de Telefone -->
             <div class="input-group mb-3">
-                <label for="phoneNumber" class="input-label"></label>
+                <label for="phoneNumber" class="input-label">Número de Telefone</label>
                 <div class="input-wrapper">
                     <span class="icon"><i class="fas fa-phone"></i></span>
                     <input type="text" class="input-field form-control" id="phoneNumber" placeholder="Número de Telefone">
@@ -87,7 +102,7 @@
 
             <!-- Mensagem -->
             <div class="input-group mb-3">
-                <label for="message" class="input-label"></label>
+                <label for="message" class="input-label">Mensagem</label>
                 <div class="input-wrapper">
                     <span class="icon"><i class="fas fa-comment"></i></span>
                     <textarea class="input-field form-control" id="message" rows="4" placeholder="Digite sua mensagem"></textarea>
@@ -103,35 +118,10 @@
         </div>
     </div>
 
-    <!-- Testemunhos -->
-    <div class="container mt-5">
-        <h2 class="text-center">O que nossos usuários dizem</h2>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="testimonial">
-                    <p>"Serviço excelente! Facilitou muito minha vida."</p>
-                    <p><strong>— João Silva</strong></p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="testimonial">
-                    <p>"Simples, rápido e eficiente. Recomendo a todos."</p>
-                    <p><strong>— Maria Oliveira</strong></p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="testimonial">
-                    <p>"Uma ferramenta indispensável para meu dia a dia."</p>
-                    <p><strong>— Pedro Santos</strong></p>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Informações Adicionais -->
     <div class="container mt-5">
         <h2>Sobre Nós</h2>
-        <p>Envia mensagem via WhatsApp sem necessidade de ter o contato salvo!</p>
+        <p>Envia mensagem via WhatsApp sem necessidade de ter o contato salvo! Ideal para mensagens rápidas e práticas.</p>
 
         <h2>Contato</h2>
         <p>Email: felipe-adm@outlook.com.br<br>
